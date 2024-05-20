@@ -43,6 +43,17 @@ const String tDontHaveAnAccount = "Don't have an Account? ";
 const String tSignUpTitle = "Sign Up";
 const String tSignUpSubTitle = "Create your profile to start your Journey.";
 const String tAlreadyHaveAnAccount = "Already have an Account? ";
+const String tConfirmPassword = "Confirm Password";
+
+// General Texts
+const String tContinue = 'Continue';
+const String tResendEmailLink = 'Resend Email Link';
+const String tBacktoLogin = 'Back to Login';
+
+// Email Verification Screen Texts
+const String tEmailVerificationTitle = 'Email Verification';
+const String tEmailVerificationSubTitle =
+    'Please verify your email address to proceed.';
 
 // -- Forget Password Text
 const String tForgetPasswordTitle = "Make Selection!";
@@ -58,3 +69,12 @@ const String tForgetPhoneSubTitle =
 // -- Forget Password Via E-Mail - Text
 const String tForgetMailSubTitle =
     "Enter your registered E-Mail to receive OTP";
+
+const String tOtpTitle = "CO\nDE";
+const String tOtpSubTitle = "Verification";
+const String tOtpMessage = "Enter the verification code sent at ";
+
+const String tAlert = "Alert";
+const String tOhSnap = "Oh Snap";
+const String tEmailSent = "Email sent";
+const String tAccountCreateVerifyEmail = "Account Create Verify Email";

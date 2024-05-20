@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "220787537015",
+    "project_id": "hisani-edc9d",
+    "storage_bucket": "hisani-edc9d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220787537015:android:9589daf7220dcc2cdf4272",
+        "android_client_info": {
+          "package_name": "com.hisani.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAl_V8lSTAm62SZF4tl_ujevadumEm7PzM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

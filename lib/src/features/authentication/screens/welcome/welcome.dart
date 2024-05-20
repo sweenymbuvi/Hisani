@@ -5,6 +5,7 @@ import 'package:hisani/src/constants/sizes.dart';
 import 'package:hisani/src/constants/text_strings.dart';
 import 'package:get/get.dart';
 import 'package:hisani/src/features/authentication/screens/login/login_screen.dart';
+import 'package:hisani/src/features/authentication/screens/signup/signup_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -50,7 +51,7 @@ class WelcomeScreen extends StatelessWidget {
                 const SizedBox(width: 10.0),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => Get.to(() => const SignUpScreen()),
                     child: Text(tSignUpTitle.toUpperCase()),
                   ),
                 ),
