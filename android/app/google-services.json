@@ -12,7 +12,20 @@
           "package_name": "com.hisani.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "220787537015-5t57iseurjegquqitcj3i179rsfudo3s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hisani.app",
+            "certificate_hash": "f1df0bb6269afd25b283bee9fab0b18d677948e0"
+          }
+        },
+        {
+          "client_id": "220787537015-oj6iq1ab5fdac81f2mchug70bjv11dij.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAl_V8lSTAm62SZF4tl_ujevadumEm7PzM"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "220787537015-oj6iq1ab5fdac81f2mchug70bjv11dij.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

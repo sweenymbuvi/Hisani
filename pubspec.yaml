@@ -42,6 +42,8 @@ dependencies:
   firebase_core: ^2.31.0
   firebase_auth: ^4.19.5
   cloud_firestore: ^4.17.3
+  google_sign_in: ^6.2.1 
+  local_auth: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +71,13 @@ flutter:
   assets: 
     - assets/images/
     - assets/logo/google.webp
+    - assets\images\dashboard\bannerImage2.png
+    - assets\images\dashboard\bookmarkIcon.png
+    - assets\images\dashboard\dash-1.png
+    - assets\images\dashboard\dash-person.png
+    
+
+
     
   #   - images/a_dot_ham.jpeg
 

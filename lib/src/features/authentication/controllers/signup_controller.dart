@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hisani/src/constants/text_strings.dart';
 import 'package:hisani/src/features/authentication/models/user_model.dart';
+import 'package:hisani/src/features/authentication/screens/mail_verification/mail_verification.dart';
 import 'package:hisani/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:hisani/src/repository/user_repository/user_repository.dart';
 
@@ -15,14 +15,32 @@ class SignupController extends GetxController {
 
   final userRepo = Get.put(UserRepository());
 
+  // Define isLoading property
+  var _isLoading = false.obs;
+
+  // Getter for isLoading
+  bool get isLoading => _isLoading.value;
+
   Future<void> registerUser(String email, String password) async {
     try {
-      // Create user account
+      // Set isLoading to true when registering user
+      _isLoading(true);
+
+      // Create user account in Firebase Authentication
       await AuthenticationRepository.instance
           .createUserWithEmailAndPassword(email, password);
 
       // Send verification email
       await AuthenticationRepository.instance.sendEmailVerification();
+
+      // Create user document in Firestore
+      UserModel newUser = UserModel(
+        email: email,
+        fullName: fullName.text.trim(),
+        phoneNo: phoneNo.text.trim(),
+        password: password,
+      );
+      userRepo.createUser(newUser);
 
       // Show success message
       Get.snackbar(
@@ -34,6 +52,9 @@ class SignupController extends GetxController {
 
       // Clear the form fields
       clearFormFields();
+
+      // Redirect to the email verification screen
+      Get.off(() => const MailVerification());
     } catch (error) {
       // Show error message
       Get.snackbar(
@@ -42,6 +63,9 @@ class SignupController extends GetxController {
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
+    } finally {
+      // Set isLoading to false after operation completes
+      _isLoading(false);
     }
   }
 
@@ -50,9 +74,5 @@ class SignupController extends GetxController {
     password.clear();
     fullName.clear();
     phoneNo.clear();
-  }
-
-  Future<void> createUser(UserModel user) async {
-    userRepo.createUser(user);
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hisani/src/common_widgets/form/form_header_widget.dart';
+import 'package:get/get.dart';
 import 'package:hisani/src/constants/image_strings.dart';
 import 'package:hisani/src/constants/sizes.dart';
 import 'package:hisani/src/constants/text_strings.dart';
+import 'package:hisani/src/features/authentication/controllers/login_controller.dart';
+import 'package:hisani/src/features/authentication/screens/login/login_screen.dart';
 import 'package:hisani/src/features/authentication/screens/signup/widgets/signup_form_widget.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -10,6 +13,8 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final LoginController controller = Get.put(LoginController());
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -29,7 +34,9 @@ class SignUpScreen extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          controller.googleSignIn();
+                        },
                         icon: const Image(
                           image: AssetImage(tGoogleImage),
                           width: 20.0,
@@ -38,7 +45,9 @@ class SignUpScreen extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(() => const LoginScreen());
+                      },
                       child: Text.rich(
                         TextSpan(
                           children: [
@@ -54,6 +63,13 @@ class SignUpScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    Obx(() {
+                      if (controller.isLoading.value) {
+                        return CircularProgressIndicator();
+                      } else {
+                        return Container();
+                      }
+                    }),
                   ],
                 ),
               ],
