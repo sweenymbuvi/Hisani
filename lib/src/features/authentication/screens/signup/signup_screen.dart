@@ -26,6 +26,7 @@ class SignUpScreen extends StatelessWidget {
                   image: tWelcomeScreenImage,
                   title: tSignUpTitle,
                   subTitle: tSignUpSubTitle,
+                 
                 ),
                 const SignUpFormWidget(),
                 Column(

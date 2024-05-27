@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hisani/src/constants/sizes.dart';
 import 'package:hisani/src/constants/text_strings.dart';
 import 'package:hisani/src/features/authentication/controllers/login_controller.dart';
+import 'package:hisani/src/features/authentication/screens/forget_password/forget_password_options/forget_password_model_bottom_sheet.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
@@ -62,7 +63,9 @@ class LoginForm extends StatelessWidget {
             const SizedBox(height: tFormHeight - 20),
             Align(
               alignment: Alignment.centerRight,
-              child: TextButton(onPressed: () {}, child: Text(tForgetPassword)),
+              child: TextButton(onPressed: ()  async {
+                     await ForgetPasswordScreen.buildShowModalBottomSheet(context, '');
+                  }, child: Text(tForgetPassword)),
             ),
             SizedBox(
               width: double.infinity,

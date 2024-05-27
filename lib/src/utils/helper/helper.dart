@@ -12,6 +12,11 @@ class Helper {
       ),
     );
   }
-
+bool isDarkMode(BuildContext context) {
+  return Theme.of(context).brightness == Brightness.dark;
+}
+  static double screenWidth() {
+    return MediaQuery.of(Get.context!).size.width;
+  }
   // Other utility functions can be added here as static methods
 }

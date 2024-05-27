@@ -13,7 +13,7 @@ class MailVerificationController extends GetxController {
   void onInit() {
     super.onInit();
     sendVerificationEmail();
-    setTimeForAutoRedirect();
+   // setTimeForAutoRedirect();
   }
 
   Future<void> sendVerificationEmail() async {
@@ -24,17 +24,17 @@ class MailVerificationController extends GetxController {
     }
   }
 
-  void setTimeForAutoRedirect() {
-    _timer = Timer.periodic(Duration(seconds: 3), (timer) async {
-      await FirebaseAuth.instance.currentUser?.reload();
-      final user = FirebaseAuth.instance.currentUser;
-      if (user != null && user.emailVerified) {
-        timer.cancel();
-        // Redirect to the dashboard
-        Get.offAll(() => const LoginScreen());
-      }
-    });
-  }
+  // void setTimeForAutoRedirect() {
+  //   _timer = Timer.periodic(Duration(seconds: 3), (timer) async {
+  //     await FirebaseAuth.instance.currentUser?.reload();
+  //     final user = FirebaseAuth.instance.currentUser;
+  //     if (user != null && user.emailVerified) {
+  //       timer.cancel();
+  //       // Redirect to the dashboard
+  //       Get.offAll(() => const LoginScreen());
+  //     }
+  //   });
+  // }
 
   @override
   void onClose() {
@@ -42,5 +42,20 @@ class MailVerificationController extends GetxController {
     super.onClose();
   }
 
-  void manuallyCheckEmailVerificationStatus() {}
+   void manuallyCheckEmailVerificationStatus() async {
+    await FirebaseAuth.instance.currentUser?.reload();
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null && user.emailVerified) {
+      _timer.cancel();
+      Get.off(() => const LoginScreen());
+    } else {
+      Helper.errorSnackBar(title: tOhSnap, message: "Email not verified yet.");
+    }
+      @override
+  void onClose() {
+    _timer.cancel();
+    super.onClose();
+  }
+
+  }
 }

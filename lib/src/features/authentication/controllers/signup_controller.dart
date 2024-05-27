@@ -4,6 +4,7 @@ import 'package:hisani/src/features/authentication/models/user_model.dart';
 import 'package:hisani/src/features/authentication/screens/mail_verification/mail_verification.dart';
 import 'package:hisani/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:hisani/src/repository/user_repository/user_repository.dart';
+import "package:hisani/src/features/authentication/screens/forget_password/validation.dart";
 
 class SignupController extends GetxController {
   static SignupController get instance => Get.find();
@@ -12,6 +13,7 @@ class SignupController extends GetxController {
   final password = TextEditingController();
   final fullName = TextEditingController();
   final phoneNo = TextEditingController();
+  final Rx<String?> emailInUseError = Rx<String?>(null);
 
   final userRepo = Get.put(UserRepository());
 
@@ -49,6 +51,7 @@ class SignupController extends GetxController {
         backgroundColor: Colors.green,
         colorText: Colors.white,
       );
+      
 
       // Clear the form fields
       clearFormFields();
@@ -68,7 +71,10 @@ class SignupController extends GetxController {
       _isLoading(false);
     }
   }
-
+ void handleSignUpError(String? signUpError) {
+    // Set the emailInUseError value to display the error below the email field
+    emailInUseError.value = signUpError;
+  }
   void clearFormFields() {
     email.clear();
     password.clear();

@@ -8,11 +8,11 @@ const String tSignup = "Signup";
 const String tPhoneNo = "Phone No";
 const String tPassword = "Password";
 const String tFullName = "Full Name";
-const String tForgetPassword = "Forget Password";
+const String tForgetPassword = "Forgot Password?";
 const String tSignInWithGoogle = "Sign-In with Google";
 
 // -- Splash Screen Text
-const String tAppName = ".appable/";
+const String tAppName = ".hisani/";
 const String tAppTagLine = "Learn To Code. \nFree For Everyone";
 
 // -- On Boarding Text
@@ -59,6 +59,7 @@ const String tEmailVerificationSubTitle =
 const String tForgetPasswordTitle = "Make Selection!";
 const String tForgetPasswordSubTitle =
     "Select one of the options given below to reset your password.";
+    const String tForgotPasswordMailTitle = "Please enter email below to reset password";
 const String tResetViaEMail = "Reset via Mail Verification";
 const String tResetViaPhone = "Reset via Phone Verification";
 
@@ -78,3 +79,22 @@ const String tAlert = "Alert";
 const String tOhSnap = "Oh Snap";
 const String tEmailSent = "Email sent";
 const String tAccountCreateVerifyEmail = "Account Create Verify Email";
+
+//Dashboard Screen -Text
+const String tDashboardTitle = "WELCOME TO HISANI";
+const String tDashboardHeading = "Explore Charity Centres ";
+const String tDashboardSearch = "Search...";
+const String tDashboardBannerTitle1 = "Categories";
+const String tDashboardBannerTitle2 = "Children's Home";
+const String tDashboardBannerSubTitle = "Animal Orphanage";
+const String tDashboardButton = "View All";
+const String tDashboardTopCourses = "Top Courses";
+
+
+class TTexts {
+  static const String done = "Done";
+  static const String resendEmail = "Resend Email";
+  static const String changeYourPasswordSubTitle = "Follow the instructions to reset your password.";
+  static const String changeYourPasswordTitle = "Password Reset Email Sent";
+  // Add other text strings here
+}

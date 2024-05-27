@@ -44,6 +44,9 @@ dependencies:
   cloud_firestore: ^4.17.3
   google_sign_in: ^6.2.1 
   local_auth: ^2.2.0
+  lottie: ^3.1.2
+  get_storage: ^2.1.1
+  connectivity_plus: ^6.0.3
 
 dev_dependencies:
   flutter_test:
@@ -75,7 +78,9 @@ flutter:
     - assets\images\dashboard\bookmarkIcon.png
     - assets\images\dashboard\dash-1.png
     - assets\images\dashboard\dash-person.png
-    
+    - assets/images/forget_password/
+    - assets/images/dashboard/
+    - assets/animations/docer_animations.json
 
 
     
