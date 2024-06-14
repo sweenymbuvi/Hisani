@@ -81,6 +81,7 @@ flutter:
     - assets/images/forget_password/
     - assets/images/dashboard/
     - assets/animations/docer_animations.json
+    - assets\images\profile\profile.webp
 
 
     

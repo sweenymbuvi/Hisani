@@ -203,9 +203,16 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:hisani/src/features/authentication/screens/login/login_screen.dart'; // Import your login screen file
+import 'package:hisani/src/features/authentication/screens/profile/profile_screen.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key}) : super(key: key);
+  void _goToProfile(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ProfileScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -225,9 +232,15 @@ class Dashboard extends StatelessWidget {
             icon: Icon(Icons.logout),
           ),
           SizedBox(width: 16),
-          CircleAvatar(
-            backgroundColor: Colors.green,
-            child: Icon(Icons.person),
+          // Navigate to profile on avatar press
+          GestureDetector(
+            onTap: () {
+              _goToProfile(context);
+            },
+            child: CircleAvatar(
+              backgroundColor: Colors.green,
+              child: Icon(Icons.person),
+            ),
           ),
           SizedBox(width: 16),
         ],

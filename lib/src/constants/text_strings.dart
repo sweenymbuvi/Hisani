@@ -59,7 +59,8 @@ const String tEmailVerificationSubTitle =
 const String tForgetPasswordTitle = "Make Selection!";
 const String tForgetPasswordSubTitle =
     "Select one of the options given below to reset your password.";
-    const String tForgotPasswordMailTitle = "Please enter email below to reset password";
+const String tForgotPasswordMailTitle =
+    "Please enter email below to reset password";
 const String tResetViaEMail = "Reset via Mail Verification";
 const String tResetViaPhone = "Reset via Phone Verification";
 
@@ -90,11 +91,27 @@ const String tDashboardBannerSubTitle = "Animal Orphanage";
 const String tDashboardButton = "View All";
 const String tDashboardTopCourses = "Top Courses";
 
+const String tProfile = "Profile";
+const String tEditProfile = "Edit Profile";
+const String tLogoutDialogHeading = "Logout";
+const String tProfileHeading = "*";
+const String tProfileSubHeading = "**";
+
+const String tMenu5 = "Logout";
+const String tMenu1 = "Settings";
+const String tMenu4 = "Information";
+const String tMenu2 = "Billing details";
+const String tMenu3 = "User Management";
+
+const String tDelete = "Delete";
+const String tJoined = "Joined";
+const String tJoinedAt = "date";
 
 class TTexts {
   static const String done = "Done";
   static const String resendEmail = "Resend Email";
-  static const String changeYourPasswordSubTitle = "Follow the instructions to reset your password.";
+  static const String changeYourPasswordSubTitle =
+      "Follow the instructions to reset your password.";
   static const String changeYourPasswordTitle = "Password Reset Email Sent";
   // Add other text strings here
 }

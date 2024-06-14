@@ -13,14 +13,14 @@ class MailVerificationController extends GetxController {
   void onInit() {
     super.onInit();
     sendVerificationEmail();
-   // setTimeForAutoRedirect();
+    // setTimeForAutoRedirect();
   }
 
   Future<void> sendVerificationEmail() async {
     try {
       await AuthenticationRepository.instance.sendEmailVerification();
     } catch (e) {
-      Helper.errorSnackBar(title: tOhSnap, message: e.toString());
+      // Helper.errorSnackBar(title: tOhSnap, message: e.toString());
     }
   }
 
@@ -42,7 +42,7 @@ class MailVerificationController extends GetxController {
     super.onClose();
   }
 
-   void manuallyCheckEmailVerificationStatus() async {
+  void manuallyCheckEmailVerificationStatus() async {
     await FirebaseAuth.instance.currentUser?.reload();
     final user = FirebaseAuth.instance.currentUser;
     if (user != null && user.emailVerified) {
@@ -51,11 +51,10 @@ class MailVerificationController extends GetxController {
     } else {
       Helper.errorSnackBar(title: tOhSnap, message: "Email not verified yet.");
     }
-      @override
-  void onClose() {
-    _timer.cancel();
-    super.onClose();
-  }
-
+    @override
+    void onClose() {
+      _timer.cancel();
+      super.onClose();
+    }
   }
 }
