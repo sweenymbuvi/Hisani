@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart'; // Correct import
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:hisani/src/features/authentication/models/user_model.dart';
+import 'package:image_picker/image_picker.dart'; // Make sure to import this for XFile
 
 class UserRepository extends GetxController {
   static UserRepository get instance => Get.find();
@@ -29,5 +35,25 @@ class UserRepository extends GetxController {
       );
       print(error.toString());
     });
+  }
+
+  // Corrected uploadImage method
+  Future<String> uploadImage(String path, XFile image) async {
+    try {
+      final ref = FirebaseStorage.instance.ref(path).child(image.name);
+      // Upload the file to Firebase Storage
+      await ref.putFile(File(image.path));
+      // Get the download URL for the uploaded image
+      final url = await ref.getDownloadURL();
+      return url;
+    } on FirebaseException catch (e) {
+      // Handle Firebase specific errors
+      print("FirebaseException: ${e.message}");
+      throw e.message ?? "An error occurred while uploading the image.";
+    } catch (e) {
+      // Handle other errors
+      print("Exception: $e");
+      throw "Something went wrong. Please try again.";
+    }
   }
 }
