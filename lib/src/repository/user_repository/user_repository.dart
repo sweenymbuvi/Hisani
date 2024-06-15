@@ -37,20 +37,44 @@ class UserRepository extends GetxController {
       print(error.toString());
     });
   }
-  // Fetch all users/ user details
-Future<UserModel> getUserDetails(String email) async{
-  final snapshot = await _db.collection("Users").where("Email", isEqualTo: email).get();
-  final userData = snapshot.docs.map((e) => UserModel.fromSnapshot(e)).first;
-return userData;
-}
-Future<List<UserModel>> allUsers() async {
-  final snapshot = await _db.collection("Users").get();
-  final userData = snapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList();
-  return userData;
- }
-//Update
-Future<void> updateUserRecord(UserModel user) async {
-  await _db.collection("Users").doc(user.id).update(user.toJson());
-}
 
+  // Fetch all users/ user details
+  Future<UserModel> getUserDetails(String email) async {
+    final snapshot =
+        await _db.collection("Users").where("Email", isEqualTo: email).get();
+    final userData = snapshot.docs.map((e) => UserModel.fromSnapshot(e)).first;
+    return userData;
+  }
+
+  Future<List<UserModel>> allUsers() async {
+    final snapshot = await _db.collection("Users").get();
+    final userData =
+        snapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList();
+    return userData;
+  }
+
+//Update
+  Future<void> updateUserRecord(UserModel user) async {
+    await _db.collection("Users").doc(user.id).update(user.toJson());
+  }
+
+// Corrected uploadImage method
+  Future<String> uploadImage(String path, XFile image) async {
+    try {
+      final ref = FirebaseStorage.instance.ref(path).child(image.name);
+      // Upload the file to Firebase Storage
+      await ref.putFile(File(image.path));
+      // Get the download URL for the uploaded image
+      final url = await ref.getDownloadURL();
+      return url;
+    } on FirebaseException catch (e) {
+      // Handle Firebase specific errors
+      print("FirebaseException: ${e.message}");
+      throw e.message ?? "An error occurred while uploading the image.";
+    } catch (e) {
+      // Handle other errors
+      print("Exception: $e");
+      throw "Something went wrong. Please try again.";
+    }
+  }
 }
