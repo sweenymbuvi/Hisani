@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hisani/src/constants/colors.dart';
@@ -7,10 +9,14 @@ import 'package:hisani/src/constants/text_strings.dart';
 import 'package:hisani/src/features/authentication/screens/profile/update_profile_screen.dart';
 import 'package:hisani/src/features/authentication/screens/profile/widgets/profile_menu.dart';
 import 'package:hisani/src/repository/authentication_repository/authentication_repository.dart';
+
+
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +59,7 @@ class ProfileScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(100),
                           color: tPrimaryColor),
                       child: const Icon(
+                       
                         LineAwesomeIcons.pencil_alt_solid,
                         color: Colors.black,
                         size: 20,
