@@ -15,7 +15,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
- //final deviceStorage = GetStorage();
+ 
   late final Rx<User?> _firebaseUser;
   final _auth = FirebaseAuth.instance;
   final _phoneVerificationId = ''.obs;

@@ -7,6 +7,7 @@ class UserRepository extends GetxController {
   static UserRepository get instance => Get.find();
 
   final _db = FirebaseFirestore.instance;
+// store user in Firestore
 
   void createUser(UserModel user) async {
     await _db.collection("Users").add(user.toJson()).then(
@@ -30,4 +31,20 @@ class UserRepository extends GetxController {
       print(error.toString());
     });
   }
+  // Fetch all users/ user details
+Future<UserModel> getUserDetails(String email) async{
+  final snapshot = await _db.collection("Users").where("Email", isEqualTo: email).get();
+  final userData = snapshot.docs.map((e) => UserModel.fromSnapshot(e)).first;
+return userData;
+}
+Future<List<UserModel>> allUsers() async {
+  final snapshot = await _db.collection("Users").get();
+  final userData = snapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList();
+  return userData;
+ }
+//Update
+Future<void> updateUserRecord(UserModel user) async {
+  await _db.collection("Users").doc(user.id).update(user.toJson());
+}
+
 }
