@@ -47,9 +47,12 @@ dependencies:
   lottie: ^3.1.2
   get_storage: ^2.1.1
   connectivity_plus: ^6.0.3
+<<<<<<< HEAD
   image_picker: ^1.1.2
   firebase_storage: ^11.7.5
 
+=======
+>>>>>>> f2994a915c0e22b48225a9eda6d1f3cfbc1b0460
   
   
 dev_dependencies:
