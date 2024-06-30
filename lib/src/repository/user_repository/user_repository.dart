@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart'; // Make sure to import this for
 
 class UserRepository extends GetxController {
   static UserRepository get instance => Get.find();
+  final _firestore = FirebaseFirestore.instance;
 
   final _db = FirebaseFirestore.instance;
 // store user in Firestore
@@ -58,23 +59,37 @@ class UserRepository extends GetxController {
     await _db.collection("Users").doc(user.id).update(user.toJson());
   }
 
+  Future<void> updateUserProfilePic(String email, String profilePicUrl) async {
+    final snapshot = await _firestore
+        .collection('Users')
+        .where('Email', isEqualTo: email)
+        .get();
+    if (snapshot.docs.isNotEmpty) {
+      final docId = snapshot.docs.first.id;
+      await _firestore
+          .collection('Users')
+          .doc(docId)
+          .update({'ProfilePicUrl': profilePicUrl});
+    }
+
 // Corrected uploadImage method
-  Future<String> uploadImage(String path, XFile image) async {
-    try {
-      final ref = FirebaseStorage.instance.ref(path).child(image.name);
-      // Upload the file to Firebase Storage
-      await ref.putFile(File(image.path));
-      // Get the download URL for the uploaded image
-      final url = await ref.getDownloadURL();
-      return url;
-    } on FirebaseException catch (e) {
-      // Handle Firebase specific errors
-      print("FirebaseException: ${e.message}");
-      throw e.message ?? "An error occurred while uploading the image.";
-    } catch (e) {
-      // Handle other errors
-      print("Exception: $e");
-      throw "Something went wrong. Please try again.";
+    Future<String> uploadImage(String path, XFile image) async {
+      try {
+        final ref = FirebaseStorage.instance.ref(path).child(image.name);
+        // Upload the file to Firebase Storage
+        await ref.putFile(File(image.path));
+        // Get the download URL for the uploaded image
+        final url = await ref.getDownloadURL();
+        return url;
+      } on FirebaseException catch (e) {
+        // Handle Firebase specific errors
+        print("FirebaseException: ${e.message}");
+        throw e.message ?? "An error occurred while uploading the image.";
+      } catch (e) {
+        // Handle other errors
+        print("Exception: $e");
+        throw "Something went wrong. Please try again.";
+      }
     }
   }
 }

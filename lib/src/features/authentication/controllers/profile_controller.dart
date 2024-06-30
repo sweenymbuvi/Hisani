@@ -1,7 +1,5 @@
 import 'dart:typed_data';
-import 'dart:io'; // Required for File operations on mobile
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hisani/src/features/authentication/models/user_model.dart';
 import 'package:hisani/src/repository/authentication_repository/authentication_repository.dart';
@@ -17,88 +15,98 @@ class ProfileController extends GetxController {
   final _storage = FirebaseStorage.instance;
 
   Uint8List? _profileImage;
+  String? _profileImageUrl; // To store the URL locally
 
   Uint8List? get profileImage => _profileImage;
+  String? get profileImageUrl =>
+      _profileImageUrl; // Getter for the profile image URL
 
-  // Pick image from gallery and upload to Firebase Storage
+  // Set user data and profile image URL
+  void setUserData(UserModel user) {
+    _profileImageUrl =
+        user.profilePicUrl; // Set the profile image URL from user data
+    update(); // Trigger GetX update
+  }
+
+  // Method to pick image and upload it to Firebase Storage
   Future<void> pickAndUploadProfileImage() async {
-    // Check if running on web
-    if (GetPlatform.isWeb) {
-      // Use file_picker for web
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.image,
-        allowMultiple: false,
-      );
+    Uint8List? pickedImageBytes;
 
-      if (result == null || result.files.isEmpty) return;
+    try {
+      // Check platform
+      if (GetPlatform.isWeb) {
+        // Use FilePicker for web
+        FilePickerResult? result = await FilePicker.platform.pickFiles(
+          type: FileType.image,
+          allowMultiple: false,
+        );
 
-      Uint8List? fileBytes = result.files.first.bytes;
-      String fileName =
-          "profile_images/${DateTime.now().millisecondsSinceEpoch}.jpg";
+        if (result != null && result.files.isNotEmpty) {
+          pickedImageBytes = result.files.first.bytes;
+        }
+      } else {
+        // Use ImagePicker for mobile
+        final picker = ImagePicker();
+        final XFile? imageFile =
+            await picker.pickImage(source: ImageSource.gallery);
 
-      try {
-        // Upload image to Firebase Storage
+        if (imageFile != null) {
+          pickedImageBytes = await imageFile.readAsBytes();
+        }
+      }
+
+      if (pickedImageBytes != null) {
+        // Upload the image to Firebase Storage
+        final imagePath =
+            "profile_images/${DateTime.now().millisecondsSinceEpoch}.jpg";
         final uploadTask =
-            await _storage.ref().child(fileName).putData(fileBytes!);
-        final url = await uploadTask.ref.getDownloadURL();
+            await _storage.ref().child(imagePath).putData(pickedImageBytes);
 
-        // Update user profile with image URL
-        await _userRepo.uploadImage(_authRepo.firebaseUser!.uid, url as XFile);
+        // Get the download URL of the uploaded image
+        final downloadUrl = await uploadTask.ref.getDownloadURL();
 
-        // Update local profile image
-        _profileImage = fileBytes;
-        update(); // Update GetX reactive variables
-      } catch (e) {
-        print('Error uploading profile image: $e');
-        // Handle error as needed
+        // Update the local profile image
+        _profileImage = pickedImageBytes;
+        _profileImageUrl = downloadUrl; // Store the URL locally
+
+        // Update the user's profile with the new image URL
+        final firebaseUser = _authRepo.firebaseUser;
+        if (firebaseUser != null) {
+          final email = firebaseUser.email;
+          if (email != null) {
+            await _userRepo.updateUserProfilePic(email, downloadUrl);
+          }
+        }
+
+        update(); // Trigger GetX update
       }
-    } else {
-      // Use image_picker for mobile
-      final picker = ImagePicker();
-      final XFile? imageFile =
-          await picker.pickImage(source: ImageSource.gallery);
-      if (imageFile == null) return;
-
-      final imagePath =
-          "profile_images/${DateTime.now().millisecondsSinceEpoch}.jpg";
-
-      try {
-        // On mobile platforms, convert XFile to File
-        final File file = File(imageFile.path);
-
-        // Upload image to Firebase Storage
-        final TaskSnapshot uploadTask =
-            await _storage.ref().child(imagePath).putFile(file);
-
-        // Get download URL from Firebase Storage
-        final url = await uploadTask.ref.getDownloadURL();
-
-        // Update user profile with image URL
-        await _userRepo.uploadImage(_authRepo.firebaseUser!.uid, url as XFile);
-
-        // Update local profile image
-        _profileImage = await imageFile.readAsBytes();
-        update(); // Update GetX reactive variables
-      } catch (e) {
-        print('Error uploading profile image: $e');
-        // Handle error as needed
-      }
+    } catch (e) {
+      print('Error uploading profile image: $e');
+      Get.snackbar(
+        'Error',
+        'Failed to upload profile image. Please try again.',
+      );
     }
   }
 
-  // Get user data asynchronously
+  // Fetch user data
   Future<UserModel?> getUserData() async {
     final firebaseUser = _authRepo.firebaseUser;
     final email = firebaseUser?.email;
+
     if (email != null) {
-      return await _userRepo.getUserDetails(email);
+      final user = await _userRepo.getUserDetails(email);
+      if (user != null) {
+        setUserData(user); // Set user data including profile image URL
+      }
+      return user;
     } else {
       Get.snackbar("Error", "Login to continue");
       return null;
     }
   }
 
-  // Fetch list of user records
+  // Fetch list of all users
   Future<List<UserModel>> getAllUsers() async => await _userRepo.allUsers();
 
   // Update user record
