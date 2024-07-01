@@ -29,11 +29,6 @@ Before setting up the project, ensure you have the following installed:
     ```bash
     flutter pub get
     ```
-- Clone the repo
-
-    ```bash
-    git clone https://github.com/sweenymbuvi/Hisani.git
-    ```
 - Set up Firebase
 
 1. Go to the [Firebase Console](https://console.firebase.google.com/).
@@ -43,7 +38,7 @@ Before setting up the project, ensure you have the following installed:
    - Download `google-services.json` for Android and place it in the `android/app` directory.
 3. Configure Firebase Authentication and Firestore
    - Enable Firebase Authentication in the Firebase Console and set up the required sign-in methods (e.g., Email/Password, Google).
-   - Set up Firestore in the Firebase Console and create the necessary collections and documents based on your app's data structure.
+   - Set up Firestore in the Firebase Console and create the necessary collections such as Users, organizations and Volunteering.
 
 - Run the app 
 
@@ -103,7 +98,6 @@ The project is organized as follows:
 
 - **lib/**: Main directory containing Flutter application code.
 - **screens/**: Individual screen widgets like `HomeScreen.dart`, `SearchScreen.dart`, `ProfileScreen.dart`.
-- **widgets/**: Reusable widgets used throughout the app.
 - **models/**: Data models, including `OrganizationModel.dart` and `VolunteeringModel.dart`.
 - **services/**: Backend services and API interactions, including Firebase and Google Maps integrations.
 - **utils/**: Utility functions and helpers.
@@ -117,6 +111,5 @@ The project is organized as follows:
   - Main screens like `dashboard.dart`, `.dart`, `search_screen.dart`, and `volunteer_opportunities.dart`.
 - **models/**:
   - Data models that define the structure of various entities.
-- **services/FirebaseService.dart**: Handles interactions with Firebase for authentication and data management.
-- **services/DonationService.dart**: Manages donation-related functionality.
+- **services/local_auth.dart**: Handles interactions with Firebase for authentication and data management.
 
