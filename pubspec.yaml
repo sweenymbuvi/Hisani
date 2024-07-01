@@ -60,6 +60,7 @@ dependencies:
   image_cropper: ^7.0.5
   permission_handler: ^11.3.1
   http: ^1.2.1
+  mpesa_flutter_plugin: ^1.6.1
 
   
   
@@ -97,6 +98,11 @@ flutter:
     - assets/images/dashboard/
     - assets/animations/docer_animations.json
     - assets\images\profile\profile.webp
+    - assets\images\billing\mpesa.png
+    - assets\images\billing\paypal.jpg
+    - assets\images\billing\visa.png
+    - assets\images\billing\cash.jpg
+
 
 
     

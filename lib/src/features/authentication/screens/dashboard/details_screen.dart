@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:hisani/src/constants/colors.dart';
 import 'package:hisani/src/features/authentication/models/organization_model.dart';
 import 'package:hisani/src/features/authentication/screens/dashboard/donate_physical_screen.dart';
 import 'package:hisani/src/features/authentication/screens/dashboard/widgets/calculator_builder.dart';
 import 'package:hisani/src/features/authentication/screens/maps/map_detail_screen.dart';
+import 'package:hisani/src/features/authentication/screens/payment/billingDetailsScreen.dart';
 
 class DetailScreen extends StatelessWidget {
   final String organizationId;
@@ -266,13 +268,14 @@ class DetailScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop(); // Close the modal
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      builder: (BuildContext context) {
-                        return CalculatorBuilder(); // Assuming CalculatorBuilder is for monetary donations
-                      },
-                    );
+                    Get.to(() => const BillingDetailsScreen());
+                    // showModalBottomSheet(
+                    //   context: context,
+                    //   isScrollControlled: true,
+                    //   builder: (BuildContext context) {
+                    //     return CalculatorBuilder(); // Assuming CalculatorBuilder is for monetary donations
+                    //   },
+                    // );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue, // Adjust with your color
