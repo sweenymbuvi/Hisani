@@ -14,6 +14,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   late final TextEditingController controller;
   bool isSearching = false;
+  bool isCategorySearching = false;
   List<Map<String, dynamic>> searchResults = [];
   bool noMatchFound = false;
 
@@ -57,6 +58,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<void> searchOrganizationsByCategory(String category) async {
     setState(() {
       isSearching = true;
+      isCategorySearching = true;
       searchResults = [];
       noMatchFound = false;
     });
@@ -79,6 +81,25 @@ class _SearchScreenState extends State<SearchScreen> {
         noMatchFound = true;
       });
     }
+  }
+
+  void clearSearch() {
+    setState(() {
+      controller.clear();
+      isSearching = false;
+      isCategorySearching = false;
+      searchResults = [];
+      noMatchFound = false;
+    });
+  }
+
+  void goBackFromCategorySearch() {
+    setState(() {
+      isSearching = false;
+      isCategorySearching = false;
+      searchResults = [];
+      noMatchFound = false;
+    });
   }
 
   @override
@@ -114,23 +135,18 @@ class _SearchScreenState extends State<SearchScreen> {
                         )
                       : Row(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isSearching = false;
-                                });
-                                controller.clear();
-                                searchResults = [];
-                              },
-                              child: SizedBox(
-                                width: 24.w,
-                                child: SvgPicture.asset(
-                                  'assets/images/back.svg',
+                            if (isCategorySearching)
+                              GestureDetector(
+                                onTap: goBackFromCategorySearch,
+                                child: SizedBox(
                                   width: 24.w,
-                                  color: Colors.black,
+                                  child: SvgPicture.asset(
+                                    'assets/images/back.png',
+                                    width: 24.w,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
-                            ),
                             Expanded(
                               child: Text(
                                 'Search Result',
@@ -183,16 +199,26 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               onChanged: (value) {
                 setState(() {
-                  isSearching = true;
+                  isSearching = value
+                      .isNotEmpty; // Only start searching if input is not empty
+                  isCategorySearching = false;
                 });
                 searchOrganizations(value);
               },
             ),
           ),
+          if (isSearching && controller.text.isNotEmpty)
+            GestureDetector(
+              onTap: clearSearch,
+              child: Icon(Icons.clear,
+                  color: Colors.black), // X button to clear the search
+            ),
+          SizedBox(width: 8.w), // Add some space between the buttons
           GestureDetector(
             onTap: () {
               setState(() {
                 isSearching = true;
+                isCategorySearching = false;
               });
               searchOrganizations(controller.text);
             },

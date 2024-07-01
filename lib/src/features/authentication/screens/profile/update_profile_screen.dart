@@ -69,13 +69,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   UserModel user = snapshot.data!;
                   final id = TextEditingController(text: user.id);
                   final email = TextEditingController(text: user.email);
-                  final password = TextEditingController(text: user.password);
                   final fullName = TextEditingController(text: user.fullName);
                   final phoneNo = TextEditingController(text: user.phoneNo);
                   final secondaryEmail =
                       TextEditingController(text: user.secondaryEmail ?? '');
                   final secondaryPhoneNo =
                       TextEditingController(text: user.secondaryPhoneNo ?? '');
+
+                  // Fetch the current password from the database
+                  final currentPassword = user.password ?? '';
 
                   return Column(
                     children: [
@@ -250,19 +252,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 ],
                               ),
                             const SizedBox(height: tFormHeight - 20),
-                            TextFormField(
-                              controller: password,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                labelText: tPassword,
-                                prefixIcon: const Icon(Icons.fingerprint),
-                                suffixIcon: IconButton(
-                                  icon: const Icon(LineAwesomeIcons.eye_slash),
-                                  onPressed: () {},
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: tFormHeight),
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
@@ -271,7 +260,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                     final userData = UserModel(
                                       id: id.text.trim(),
                                       email: email.text.trim(),
-                                      password: password.text.trim(),
                                       fullName: fullName.text.trim(),
                                       phoneNo: phoneNo.text.trim(),
                                       profilePicUrl: controller.profileImageUrl,
@@ -284,6 +272,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                               .isNotEmpty
                                           ? secondaryPhoneNo.text.trim()
                                           : null,
+                                      password:
+                                          currentPassword, // Keep current password
                                     );
 
                                     await controller.updateRecord(userData);
@@ -315,23 +305,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             ),
                             const SizedBox(height: tFormHeight),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment:
+                                  MainAxisAlignment.end, // Align to end
                               children: [
-                                const Text.rich(
-                                  TextSpan(
-                                    text: tJoined,
-                                    style: TextStyle(fontSize: 12),
-                                    children: [
-                                      TextSpan(
-                                        text: tJoinedAt,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
                                 ElevatedButton(
                                   onPressed: () {},
                                   style: ElevatedButton.styleFrom(
