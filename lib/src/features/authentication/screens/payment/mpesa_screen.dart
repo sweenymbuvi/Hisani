@@ -123,7 +123,7 @@ class _MpesaScreenState extends State<MpesaScreen> {
 
   Future<void> waitForPaymentConfirmation(String checkoutRequestID, double amount, String userPhoneInput, String fullName, String organizationName) async {
   
-    await Future.delayed(Duration(seconds: 30)); 
+    await Future.delayed(Duration(seconds: 20)); 
   String transactionStatus = await fetchTransactionStatus(checkoutRequestID);
     
 
