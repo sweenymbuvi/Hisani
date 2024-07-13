@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return BlocProvider(
-          create: (context) => PaymentBloc(), // Provide the PaymentBloc here
+          create: (context) => PaymentBloc(), 
           child: GetMaterialApp(
             theme: TAppTheme.lightTheme,
             darkTheme: TAppTheme.darkTheme,
