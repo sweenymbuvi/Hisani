@@ -10,6 +10,7 @@ import 'package:hisani/src/features/authentication/screens/payment/payment_scree
 import 'package:hisani/src/features/authentication/screens/welcome/welcome.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisani/src/repository/authentication_repository/authentication_repository.dart';
+import 'package:hisani/src/repository/user_repository/user_repository.dart';
 import 'package:hisani/src/utils/theme/theme.dart';
 
 void main() async {
@@ -17,6 +18,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Get.put(AuthenticationRepository());
   await GetStorage.init();
+  Get.put<UserRepository>(UserRepository());
 
   runApp(MyApp());
 }
