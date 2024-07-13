@@ -26,7 +26,7 @@ class _SimpleMapState extends State<SimpleMap> {
 
   Future<void> _fetchCoordinates(String address) async {
     final apiKey =
-        'AIzaSyCvrPV54xt8PBYX-bjIc3CY5zWERhc8pWE'; // Replace with your API key
+        'AIzaSyC9vzs6CvQr2mna25-uVGullXDr_QIswh0'; // Replace with your API key
     final url =
         'https://maps.googleapis.com/maps/api/geocode/json?address=${Uri.encodeComponent(address)}&key=$apiKey';
 
