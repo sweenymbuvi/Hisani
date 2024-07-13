@@ -11,8 +11,13 @@ import 'package:hisani/src/features/authentication/screens/payment/billingDetail
 
 class DetailScreen extends StatelessWidget {
   final String organizationId;
+   final String organizationName;
 
-  DetailScreen(this.organizationId);
+ const DetailScreen({
+    Key? key,
+    required this.organizationId,
+    required this.organizationName,
+  }) : super(key: key);
 
   Future<OrganizationModel?> fetchOrganization() async {
     try {
@@ -268,7 +273,10 @@ class DetailScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop(); // Close the modal
-                    Get.to(() => const BillingDetailsScreen());
+                     Get.to(() => BillingDetailsScreen(
+                    organizationId: organizationId,
+                    organizationName: organizationName,
+                  ));
                     // showModalBottomSheet(
                     //   context: context,
                     //   isScrollControlled: true,

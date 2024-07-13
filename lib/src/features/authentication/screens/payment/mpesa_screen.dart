@@ -2,18 +2,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hisani/src/constants/colors.dart';
+import 'package:hisani/src/features/authentication/controllers/profile_controller.dart';
 import 'package:mpesa_flutter_plugin/mpesa_flutter_plugin.dart';
 import 'package:mpesa_flutter_plugin/payment_enums.dart';
 
 class MpesaScreen extends StatefulWidget {
-  const MpesaScreen({Key? key}) : super(key: key);
+ final String organizationId;
+  final String organizationName;
+
+  const MpesaScreen({
+    Key? key,
+    required this.organizationId,
+    required this.organizationName,
+  }) : super(key: key);
 
   @override
   _MpesaScreenState createState() => _MpesaScreenState();
 }
 
 class _MpesaScreenState extends State<MpesaScreen> {
+ final controller = Get.put(ProfileController());
   late DocumentReference paymentsRef;
   bool _initialized = false;
   bool _error = false;
@@ -55,8 +65,9 @@ class _MpesaScreenState extends State<MpesaScreen> {
   }
 
   Future<void> startTransaction({required double amount, required String userPhoneInput}) async {
-    if (_error) {
-      print("Error initializing transaction: Firebase not initialized or user not logged in.");
+     final user = await controller.getUserData();
+    if (user == null) {
+      print("Error: No user data found. Please login first.");
       return;
     }
  
@@ -69,43 +80,81 @@ class _MpesaScreenState extends State<MpesaScreen> {
         partyB: "174379",
         callBackURL: Uri(
           scheme: "https",
-          host: "us-central1-nigel-da5d1.cloudfunctions.net",
+          host: "us-central1-hisani-edc9d.cloudfunctions.net",
           path: "paymentCallback",
         ),
-        accountReference: "Children's home",
+        accountReference:widget.organizationName,
         phoneNumber: userPhoneInput,
         baseUri: Uri(scheme: "https", host: "sandbox.safaricom.co.ke"),
-        transactionDesc: "purc",
+           transactionDesc: "Donation to ${widget.organizationName}",
         passKey: "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919",
       );
 
       var result = transactionInitialisation as Map<String, dynamic>;
 
-      if (result.keys.contains("ResponseCode")) {
+        if (result.keys.contains("ResponseCode")) {
         String mResponseCode = result["ResponseCode"];
         print("Resulting Code: $mResponseCode");
-        if (mResponseCode == '0') {
-          await updateAccount(result["CheckoutRequestID"], amount, userPhoneInput);
-        }
+       
+      
+
+        await waitForPaymentConfirmation(result["CheckoutRequestID"], amount, userPhoneInput, user.fullName,widget.organizationName);
+      } else {
+        print("Error initiating transaction: ${result.toString()}");
+        showTransactionStatus('Transaction Error', 'An error occurred during the transaction.');
       }
-      print("RESULT: $transactionInitialisation");
     } catch (e) {
       print("Exception Caught: ${e.toString()}");
+      showTransactionStatus('Transaction Error', 'An error occurred during the transaction.');
+    }
+  }
+  Future<String> fetchTransactionStatus(String checkoutRequestID) async {
+  try{
+   DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('donations').doc(checkoutRequestID).get();
+  return snapshot.exists ? snapshot['status']?? 'Pending' : 'Pending';
+  }catch (e) {
+      print("Error fetching transaction status: $e");
+      return 'Pending';
     }
   }
 
-  Future<void> updateAccount(String mCheckoutRequestID, double amount, String userPhoneInput) async {
+
+
+
+  Future<void> waitForPaymentConfirmation(String checkoutRequestID, double amount, String userPhoneInput, String fullName, String organizationName) async {
+  
+    await Future.delayed(Duration(seconds: 30)); 
+  String transactionStatus = await fetchTransactionStatus(checkoutRequestID);
+    
+
+    if (transactionStatus == 'Approved') {
+      await updateAccount(checkoutRequestID, amount, userPhoneInput, fullName, 'Approved',organizationName);
+      showTransactionStatus('Transaction Successful', 'Your payment was successful.');
+    }  else {
+      await updateAccount(checkoutRequestID, amount, userPhoneInput, fullName, 'Failed', organizationName);
+      showTransactionStatus('Transaction Failed', 'Your payment failed. Please try again.');
+    }
+  }
+ Future<void> updateAccount(String checkoutRequestID, double amount, String userPhoneInput,String fullName, String status,String organizationName) async {
     try {
-      await FirebaseFirestore.instance.collection('donations').add({
-        'amount': amount,
-        'phoneNumber': userPhoneInput,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-      print("Donation added to collection.");
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance.collection('donations').doc(checkoutRequestID).set({
+          'FullName': fullName,
+          'amount': amount,
+          'phoneNumber': userPhoneInput,
+          'timestamp': FieldValue.serverTimestamp(),
+          'status': status,
+          'checkoutRequestID': checkoutRequestID,
+           'organizationName': organizationName,
+        }, SetOptions(merge: true));
+        print("Donation added to collection.");
+      }
     } catch (error) {
       print("Failed to add donation: $error");
     }
   }
+
 
   Future<void> lipaNaMpesa() async {
     try {
@@ -130,6 +179,26 @@ class _MpesaScreenState extends State<MpesaScreen> {
     } catch (e) {
       print("CAUGHT EXCEPTION: ${e.toString()}");
     }
+  }
+  
+   void showTransactionStatus(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -263,6 +332,3 @@ class _MpesaScreenState extends State<MpesaScreen> {
     );
   }
 }
-
-
-

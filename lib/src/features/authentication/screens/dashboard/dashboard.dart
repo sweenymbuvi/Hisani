@@ -135,7 +135,8 @@ class HomeTab extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetailScreen(organizations[index].id),
+                    builder: (context) => DetailScreen(organizationId:organizations[index].id, organizationName: name,
+                    ),
                   ),
                 );
               },

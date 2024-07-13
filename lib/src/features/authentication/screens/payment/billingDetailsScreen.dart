@@ -6,7 +6,15 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:hisani/src/constants/colors.dart';
 
 class BillingDetailsScreen extends StatelessWidget {
-  const BillingDetailsScreen({Key? key}) : super(key: key);
+
+    final String organizationId;
+  final String organizationName;
+
+ const BillingDetailsScreen({
+    Key? key,
+    required this.organizationId,
+    required this.organizationName,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +38,10 @@ class BillingDetailsScreen extends StatelessWidget {
               imagePath: 'assets/images/billing/mpesa.png',
               title: 'Mpesa',
               onTap: () {
-                Get.to(() => const MpesaScreen());
+               Get.to(() => MpesaScreen(
+                  organizationId: organizationId,
+                  organizationName: organizationName,
+                ));
               },
             ),
             const SizedBox(height: 16.0),

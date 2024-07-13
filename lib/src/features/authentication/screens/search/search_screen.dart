@@ -272,7 +272,9 @@ class _SearchScreenState extends State<SearchScreen> {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  DetailScreen(organization['id']), // Pass the organization ID
+                  DetailScreen(organizationId: organization['id'],
+        organizationName: organization['name'],// Pass the organization ID
+                  ),
             ),
           );
         },
