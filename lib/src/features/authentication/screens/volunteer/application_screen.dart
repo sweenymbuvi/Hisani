@@ -4,10 +4,13 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:get/get.dart'; // Import Get for snackbar and dependency injection
 import 'package:hisani/src/constants/colors.dart';
 import 'package:hisani/src/features/authentication/models/volunteering_model.dart';
+import 'package:hisani/src/repository/user_repository/user_repository.dart';
 
 class ApplicationScreen extends StatefulWidget {
   final String opportunityId;
@@ -27,6 +30,35 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
   final _phoneController = TextEditingController();
 
   bool _isSubmitting = false;
+
+  final UserRepository _userRepo =
+      Get.find(); // Initialize UserRepository with GetX
+
+  Future<void> getUserData() async {
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    final email = firebaseUser?.email;
+
+    if (email != null) {
+      final user = await _userRepo.getUserDetails(email);
+      if (user != null) {
+        setState(() {
+          _nameController.text = user.fullName ?? '';
+          _emailController.text = user.email ?? '';
+          _phoneController.text = user.phoneNo ?? '';
+        });
+      } else {
+        Get.snackbar("Error", "Failed to fetch user details");
+      }
+    } else {
+      Get.snackbar("Error", "Login to continue");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData(); // Fetch user data when the screen initializes
+  }
 
   Future<VolunteeringModel?> fetchOpportunity() async {
     try {
@@ -252,6 +284,7 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.emailAddress,
+              enabled: false, // Disable email field as it's pre-filled
             ),
             SizedBox(height: 16.h),
             TextField(
