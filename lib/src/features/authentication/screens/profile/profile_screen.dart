@@ -6,6 +6,7 @@ import 'package:hisani/src/constants/sizes.dart';
 import 'package:hisani/src/constants/text_strings.dart';
 import 'package:hisani/src/features/authentication/controllers/profile_controller.dart';
 import 'package:hisani/src/features/authentication/models/user_model.dart';
+import 'package:hisani/src/features/authentication/screens/dashboard/history_screen.dart';
 import 'package:hisani/src/features/authentication/screens/profile/update_profile_screen.dart';
 import 'package:hisani/src/features/authentication/screens/profile/widgets/profile_menu.dart';
 import 'package:hisani/src/repository/authentication_repository/authentication_repository.dart';
@@ -39,7 +40,7 @@ class ProfileScreen extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(tDefaultSize),
           child: FutureBuilder(
-            future: controller.getUserData(), // Fetch user data
+            future: controller.getUserData(),
             builder: (context, AsyncSnapshot<UserModel?> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
@@ -48,7 +49,6 @@ class ProfileScreen extends StatelessWidget {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Profile Image and Edit Icon
                       GetBuilder<ProfileController>(
                         builder: (_) {
                           return Stack(
@@ -61,8 +61,7 @@ class ProfileScreen extends StatelessWidget {
                                             controller
                                                 .profileImageUrl!.isNotEmpty)
                                         ? NetworkImage(
-                                                controller.profileImageUrl!)
-                                            as ImageProvider
+                                            controller.profileImageUrl!)
                                         : const AssetImage(tProfileImage),
                               ),
                               Positioned(
@@ -100,8 +99,6 @@ class ProfileScreen extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 20),
-
-                      // Edit Profile Button
                       SizedBox(
                         width: 200,
                         child: ElevatedButton(
@@ -121,12 +118,23 @@ class ProfileScreen extends StatelessWidget {
                       const SizedBox(height: 30),
                       const Divider(),
                       const SizedBox(height: 10),
-
-                      // Profile Menu
                       ProfileMenuWidget(
                         title: "Settings",
                         icon: LineAwesomeIcons.cog_solid,
                         onPress: () {},
+                      ),
+                      ProfileMenuWidget(
+                        title: "History",
+                        icon: LineAwesomeIcons.history_solid,
+                        onPress: () async {
+                          final user = await controller.getUserData();
+                          if (user != null) {
+                            Get.to(
+                                () => HistoryScreen(fullName: user.fullName));
+                          } else {
+                            Get.snackbar("Error", "User data not found.");
+                          }
+                        },
                       ),
                       ProfileMenuWidget(
                         title: "Billing Details",
