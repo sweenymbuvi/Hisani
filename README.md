@@ -96,31 +96,14 @@ Before setting up the project, ensure you have the following installed:
 
 The project is organized as follows:
 
-- lib/
-  ├── screens/                  # Individual screen widgets like HomeScreen.dart, SearchScreen.dart, ProfileScreen.dart
-  │   ├── HomeScreen.dart       # Screen widget for the home screen
-  │   ├── SearchScreen.dart     # Screen widget for searching organizations
-  │   ├── ProfileScreen.dart    # Screen widget for user profiles
-  │   └── ...                   # Other screen widgets
-  ├── models/                   # Data models, including OrganizationModel.dart and VolunteeringModel.dart
-  │   ├── OrganizationModel.dart   # Data model for organization details
-  │   ├── VolunteeringModel.dart   # Data model for volunteer opportunities
-  │   └── ...                   # Other data models
-  ├── services/                 # Backend services and API interactions, including Firebase and Google Maps integrations
-  │   ├── FirebaseService.dart  # Service for Firebase integration
-  │   ├── GoogleMapsService.dart# Service for Google Maps integration
-  │   └── ...                   # Other backend services
-  ├── utils/                    # Utility functions and helpers
-  │   ├── constants.dart        # File containing constants used throughout the app
-  │   ├── helpers.dart          # Helper functions for various tasks
-  │   └── ...                   # Other utility files
-  ├── assets/                   # Contains images, icons, and other static assets
-  │   ├── images/               # Directory for images used in the app
-  │   ├── icons/                # Directory for icons used in the app
-  │   └── ...                   # Other asset directories
-  ├── main.dart                 # The entry point of your Flutter application
-  └── pubspec.yaml              # Lists the project’s dependencies and configuration
-
+- *lib/*: Main directory containing Flutter application code.
+- *screens/*: Individual screen widgets like HomeScreen.dart, SearchScreen.dart, ProfileScreen.dart.
+- *widgets/*: Reusable widgets used throughout the app.
+- *models/*: Data models, including OrganizationModel.dart and VolunteeringModel.dart.
+- *services/*: Backend services and API interactions, including Firebase and Google Maps integrations.
+- *utils/*: Utility functions and helpers.
+- *assets/*: Contains images, icons, and other static assets.
+- *pubspec.yaml*: Lists the project’s dependencies and configuration.
 
 ## Key Files
 
