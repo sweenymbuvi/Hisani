@@ -212,7 +212,7 @@ class _HistoryScreenState extends State<HistoryScreen>
         final amount = data['amount'] as num?;
         final formattedAmount =
             amount != null ? currencyFormat.format(amount) : 'N/A';
-        return 'Amount: $formattedAmount\nDate: $date';
+       return 'Organization: ${data['organizationName'] ?? 'N/A'}\nAmount: $formattedAmount\nDate: $date';
       case 'Volunteer Application':
         final timestamp = data['submittedAt'] as Timestamp?;
         final date =
